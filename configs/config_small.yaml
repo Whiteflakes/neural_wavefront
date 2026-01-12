@@ -1,0 +1,74 @@
+!!python/object:neural_wavefront.utils.config.Config
+_config:
+  data:
+    augmentation:
+      enable: true
+      flip: false
+      rotation: true
+    batch_size: 32
+    coeff_max: 3.14159
+    coeff_min: -3.14159
+    num_workers: 4
+    save_path: data/processed/jwst_dataset.npz
+    test_samples: 20
+    train_samples: 100
+    val_samples: 20
+  experiment_name: jwst_phase_retrieval_v1
+  logging:
+    checkpoint_dir: outputs/checkpoints
+    experiment_dir: outputs/experiments
+    log_interval: 10
+    save_best_only: true
+    tensorboard: true
+  loss:
+    perceptual_weight: 0.0
+    type: MSE
+  metrics:
+  - MAE
+  - RMSE
+  - R2
+  - Pearson
+  model:
+    dropout: 0.2
+    input_channels: 1
+    name: ResNet18
+    output_dim: 15
+    pretrained: false
+  random_seed: 42
+  simulation:
+    aperture_diameter: 6.5
+    grid_size: 256
+    num_segments: 18
+    pixel_scale: 0.031
+    wavelength: 2.0e-06
+  training:
+    early_stopping:
+      enable: true
+      min_delta: 0.0001
+      patience: 10
+    epochs: 50
+    gradient_clip: 1.0
+    learning_rate: 0.001
+    optimizer: Adam
+    scheduler: ReduceLROnPlateau
+    scheduler_params:
+      factor: 0.5
+      min_lr: 1.0e-06
+      patience: 5
+    weight_decay: 1.0e-05
+  visualization:
+    colormap: inferno
+    dpi: 150
+    log_scale: true
+    num_samples: 5
+    save_dir: outputs/figures
+  zernike:
+    coefficient_range:
+    - -1.0
+    - 1.0
+    max_order: 5
+    n_modes: 15
+    noll_normalization: true
+config_path: !!python/object/apply:pathlib.WindowsPath
+- configs
+- config.yaml

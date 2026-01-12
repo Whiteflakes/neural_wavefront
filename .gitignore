@@ -1,0 +1,104 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments (uv)
+.venv/
+venv/
+ENV/
+env/
+.uv/
+.python-version
+
+# PyTorch & Model Files
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+
+# Data Files
+data/raw/
+data/processed/*.npz
+data/processed/*.h5
+data/processed/*.hdf5
+*.npy
+
+# Outputs
+outputs/checkpoints/*.pth
+outputs/checkpoints/*.pt
+outputs/experiments/
+outputs/logs/
+runs/
+mlruns/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb  # Uncomment if you want to ignore all notebooks
+# notebooks/*.ipynb  # Alternative: ignore only notebooks in specific folder
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS Files
+Thumbs.db
+.DS_Store
+*.bak
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Documentation
+docs/_build/
+site/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Keep example outputs for README
+!outputs/figures/README_*.png
+!outputs/figures/example_*.png
+
+
+AGENT.md
+data/
+outputs/checkpoints/
+outputs/experiments/

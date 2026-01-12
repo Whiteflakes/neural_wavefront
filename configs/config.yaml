@@ -1,0 +1,88 @@
+# Neural Wavefront Configuration
+# All parameters for JWST Phase Retrieval using Deep Learning
+
+experiment_name: "jwst_phase_retrieval_v1"
+random_seed: 42
+
+# Physics Simulation Parameters
+simulation:
+  grid_size: 256                # Grid resolution (must be power of 2)
+  wavelength: 2.0e-6            # 2 microns (Infrared, like JWST NIRCam)
+  aperture_diameter: 6.5        # Meters (JWST primary mirror)
+  num_segments: 18              # Number of hexagonal segments (JWST standard)
+  pixel_scale: 0.031            # arcsec/pixel (NIRCam F200W)
+  
+# Zernike Polynomial Configuration
+zernike:
+  max_order: 5                  # Maximum radial order (higher = more complex aberrations)
+  n_modes: 15                   # Total number of Zernike modes to use
+  coefficient_range: [-1.0, 1.0] # Range for random coefficient generation (in waves)
+  noll_normalization: true      # Use Noll normalization convention
+  
+# Dataset Generation
+data:
+  train_samples: 10000          # Number of training samples
+  val_samples: 1000             # Number of validation samples
+  test_samples: 500             # Number of test samples
+  coeff_min: -3.14159           # Minimum Zernike coefficient (radians, ~-π)
+  coeff_max: 3.14159            # Maximum Zernike coefficient (radians, ~π)
+  batch_size: 32                # Training batch size
+  num_workers: 4                # DataLoader workers
+  save_path: "data/processed/jwst_dataset.npz"
+  augmentation:
+    enable: true
+    rotation: true              # Random rotation (8-fold symmetry)
+    flip: false                 # No flip (breaks chirality)
+
+# Model Architecture
+model:
+  name: "ResNet18"              # Options: ResNet18, ResNet34, UNet
+  input_channels: 1             # Grayscale PSF
+  output_dim: 15                # Number of Zernike coefficients
+  pretrained: false             # Use ImageNet pretrained weights
+  dropout: 0.2                  # Dropout rate
+  
+# Training Hyperparameters
+training:
+  learning_rate: 0.001          # Initial learning rate
+  weight_decay: 1.0e-5          # L2 regularization
+  optimizer: "Adam"             # Options: Adam, AdamW, SGD
+  scheduler: "ReduceLROnPlateau" # Learning rate scheduler
+  scheduler_params:
+    factor: 0.5
+    patience: 5
+    min_lr: 1.0e-6
+  epochs: 50                    # Maximum training epochs
+  early_stopping:
+    enable: true
+    patience: 10
+    min_delta: 1.0e-4
+  gradient_clip: 1.0            # Gradient clipping norm
+  
+# Loss Function
+loss:
+  type: "MSE"                   # Options: MSE, MAE, Huber
+  perceptual_weight: 0.0        # Weight for perceptual loss (0 = disabled)
+  
+# Logging and Checkpointing
+logging:
+  log_interval: 10              # Log every N batches
+  checkpoint_dir: "outputs/checkpoints"
+  experiment_dir: "outputs/experiments"
+  save_best_only: true
+  tensorboard: true
+  
+# Visualization
+visualization:
+  num_samples: 5                # Number of samples to visualize
+  save_dir: "outputs/figures"
+  dpi: 150
+  colormap: "inferno"           # PSF colormap
+  log_scale: true               # Display PSF in log scale
+  
+# Evaluation Metrics
+metrics:
+  - "MAE"                       # Mean Absolute Error
+  - "RMSE"                      # Root Mean Square Error
+  - "R2"                        # R-squared score
+  - "Pearson"                   # Pearson correlation per mode
